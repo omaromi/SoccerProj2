@@ -12,9 +12,9 @@ euro = sb.matches(competition_id = 55, season_id=43)
 countries = list(set(euro['home_team']) & set(euro['away_team']))
 country_input = st.sidebar.selectbox('Country Team', countries)
 # st.sidebar.radio('Game Select',options=countries)
-'''loads the games after a country is selected'''
 @st.cache(persist=True)
 def load_games(country):
+    '''loads the games after a country is selected'''
     filt = (euro['home_team'] == country) | (euro['away_team'] == country)
     games = euro[filt]
     return games
@@ -54,8 +54,8 @@ team2_lineup = sb.lineups(final_match[-1])[team2_str]
 team1_squad = list(set(team1_lineup['player_name']) & set(df['player']))
 team2_squad = list(set(team2_lineup['player_name']) & set(df['player']))
 
-player1_input = st.sidebar.selectbox('Player 1 Name', team1_squad)
-player2_input = st.sidebar.selectbox('Player 2 Name', team2_squad)
+player1_input = st.sidebar.selectbox(f'{team1_str} Player Name', team1_squad)
+player2_input = st.sidebar.selectbox(f'{team2_str} Player Name', team2_squad)
 
 # what data to load up
 @st.cache(persist=True)
