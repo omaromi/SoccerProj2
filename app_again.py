@@ -9,9 +9,20 @@ import streamlit as st
 # import pydeck as pdk
 
 euro = sb.matches(competition_id = 55, season_id=43)
-filt = (euro['home_team'] == 'Italy') | (euro['away_team'] == 'Italy')
-ITAgames = euro[filt]
-final_match_id = euro.at[4, 'match_id']
+countries = list(set(euro['home_team']) & set(euro['away_team']))
+country_input = st.sidebar.selectbox('Country Team', countries)
+# st.sidebar.radio('Game Select',options=countries)
+'''loads the games after a country is selected'''
+def load_games(country):
+    filt = (euro['home_team'] == country) | (euro['away_team'] == country)
+    games = euro[filt]
+    return games
+
+games = load_games(country_input)
+game_input = st.sidebar.selectbox('Games',options=games['home_team'] + ' vs. '+ games['away_team'] + ' ' + games['match_id'].apply(str))
+
+#find a way to get final_match_id from the specific game selected in game_input
+final_match_id = game_input[-7:]
 final_events = sb.events(match_id=final_match_id, split=True, flatten_attrs=False)
 
 # just get the key information from the passes
