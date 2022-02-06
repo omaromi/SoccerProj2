@@ -13,6 +13,7 @@ countries = list(set(euro['home_team']) & set(euro['away_team']))
 country_input = st.sidebar.selectbox('Country Team', countries)
 # st.sidebar.radio('Game Select',options=countries)
 '''loads the games after a country is selected'''
+@st.cache(persist=True)
 def load_games(country):
     filt = (euro['home_team'] == country) | (euro['away_team'] == country)
     games = euro[filt]
@@ -22,8 +23,8 @@ games = load_games(country_input)
 game_input = st.sidebar.selectbox('Games',options=games['home_team'] + ' vs. '+ games['away_team'] + ' ' + games['match_id'].apply(str))
 
 #find a way to get final_match_id from the specific game selected in game_input
-final_match_id = game_input[-7:]
-final_events = sb.events(match_id=final_match_id, split=True, flatten_attrs=False)
+final_match = game_input.split()
+final_events = sb.events(match_id=final_match[-1], split=True, flatten_attrs=False)
 
 # just get the key information from the passes
 all_passes = final_events['passes'][['period','location','player','pass']].copy()
@@ -46,13 +47,15 @@ col1, col2, col3 = st.columns([8,1,8])
 
 # creating the dropdown menus for each team based on the lineup,
 # specifically excluding squad players who did not feature
-ita_lineup = sb.lineups(final_match_id)['Italy']
-eng_lineup = sb.lineups(final_match_id)['England']
-ita_squad = list(set(ita_lineup['player_name']) & set(df['player']))
-eng_squad = list(set(eng_lineup['player_name']) & set(df['player']))
+team1_str = final_match[0]
+team2_str = final_match[2]
+team1_lineup = sb.lineups(final_match[-1])[team1_str]
+team2_lineup = sb.lineups(final_match[-1])[team2_str]
+team1_squad = list(set(team1_lineup['player_name']) & set(df['player']))
+team2_squad = list(set(team2_lineup['player_name']) & set(df['player']))
 
-player1_input = st.sidebar.selectbox('Player 1 Name', ita_squad)
-player2_input = st.sidebar.selectbox('Player 2 Name', eng_squad)
+player1_input = st.sidebar.selectbox('Player 1 Name', team1_squad)
+player2_input = st.sidebar.selectbox('Player 2 Name', team2_squad)
 
 # what data to load up
 @st.cache(persist=True)
