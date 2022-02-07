@@ -43,7 +43,7 @@ df = pd.concat([all_passes,pass_start,pass_end, recipient_name,pass_info],axis=1
 # layout of the streamlit app
 st.title('The Euro 2020 Final')
 st.header("Comparing two player's pass maps")
-col1, col2, col3 = st.columns([8,1,8])
+# col1, col2, col3 = st.columns([8,1,8])
 
 # creating the dropdown menus for each team based on the lineup,
 # specifically excluding squad players who did not feature
@@ -67,7 +67,7 @@ def load_data(playername):
     completed_passes = data_frame[mask]
     return completed_passes
 
-with col1:
+with st.container():
     data = load_data(player1_input)
 
     pitch = Pitch(pitch_type='statsbomb', pitch_color='#22312b', line_color='#c7d5cc')
@@ -81,7 +81,7 @@ with col1:
 
     st.pyplot(fig=fig)
 
-with col3:
+with st.container():
     data = load_data(player2_input)
 
     pitch = Pitch(pitch_type='statsbomb', pitch_color='#22312b', line_color='#c7d5cc')
