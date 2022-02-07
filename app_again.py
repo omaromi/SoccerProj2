@@ -19,8 +19,8 @@ def load_games(country):
     games = euro[filt]
     return games
 
-games = load_games(country_input)
-game_input = st.sidebar.selectbox('Games',options=games['home_team'] + ' vs. '+ games['away_team'] + ' ' + games['match_id'].apply(str))
+games_load = load_games(country_input)
+game_input = st.sidebar.selectbox('Games',options=games_load['home_team'] + ' vs. '+ games_load['away_team'] + ' ' + games_load['match_id'].apply(str))
 
 #find a way to get final_match_id from the specific game selected in game_input
 final_match = game_input.split()
