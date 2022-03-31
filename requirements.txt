@@ -5,3 +5,4 @@ pandas==1.3.5
 pydeck==0.7.1
 streamlit==1.5.0
 statsbombpy==1.4.0
+click==8.0.4
